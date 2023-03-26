@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
 import { Form } from './ContactForm.styled';
+import { toast } from 'react-toastify';
 
 export function ContactForm({ contacts, onSubmitForm }) {
   const [name, setName] = useState('');
@@ -27,11 +28,11 @@ export function ContactForm({ contacts, onSubmitForm }) {
     e.preventDefault();
 
     if (contacts.find(el => el.name.toLowerCase() === name.toLowerCase())) {
-      return alert(`${name} is already in contacts.`);
+      return toast.info(`${name} is already in contacts.`);
     } else if (
       contacts.find(el => el.number.toLowerCase() === number.toLowerCase())
     ) {
-      return alert(`${number} is already in contacts.`);
+      return toast.info(`${number} is already in contacts.`);
     }
 
     const newContact = {
