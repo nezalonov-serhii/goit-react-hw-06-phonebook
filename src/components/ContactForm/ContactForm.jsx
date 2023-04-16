@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 
 import { Form } from './ContactForm.styled';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice/contactsSlice';
 
-export function ContactForm({ contacts, onSubmitForm }) {
+export function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contact);
 
   const handleInputChange = (value, name) => {
     switch (name) {
@@ -37,11 +41,11 @@ export function ContactForm({ contacts, onSubmitForm }) {
 
     const newContact = {
       id: nanoid(),
-      name: name,
-      number: number,
+      name,
+      number,
     };
 
-    onSubmitForm(newContact);
+    dispatch(addContact(newContact));
     resetForm();
   };
 
@@ -84,8 +88,3 @@ export function ContactForm({ contacts, onSubmitForm }) {
     </Form>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmitForm: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
